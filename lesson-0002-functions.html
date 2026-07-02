@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python 速通 · 第二课：函数</title>
+<style>
+  :root {
+    --bg: #0a0e27;
+    --card: #111640;
+    --accent: #00e5ff;
+    --gold: #ffb347;
+    --text: #d0d6e0;
+    --text-dim: #8890a8;
+    --code-bg: #0d1135;
+    --good: #4caf50;
+    --bad: #ff5252;
+    --warn: #ffb347;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  h1 { 
+    color: var(--accent); font-size: 1.8em; margin: 24px 0 8px;
+    border-bottom: 2px solid var(--accent); padding-bottom: 8px;
+  }
+  h2 { color: var(--gold); font-size: 1.3em; margin: 28px 0 12px; }
+  h3 { color: var(--accent); font-size: 1.1em; margin: 20px 0 8px; }
+  p { margin: 10px 0; }
+
+  .card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 14px 0;
+    border-left: 3px solid var(--accent);
+  }
+  .card.warn { border-left-color: var(--warn); }
+  .card.good { border-left-color: var(--good); }
+  .card.bad { border-left-color: var(--bad); }
+
+  pre {
+    background: var(--code-bg);
+    border-radius: 8px;
+    padding: 14px;
+    overflow-x: auto;
+    font-size: 0.9em;
+    margin: 8px 0;
+    border: 1px solid rgba(0,229,255,0.15);
+    line-height: 1.5;
+  }
+  code { font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace; }
+  .tag { color: var(--accent); }
+  .str { color: #9ccc65; }
+  .num { color: var(--gold); }
+  .cmt { color: #6a737d; font-style: italic; }
+  .kw { color: #c792ea; }
+
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  @media (max-width: 600px) { .compare { grid-template-columns: 1fr; } }
+  .col-label {
+    text-align: center;
+    font-weight: bold;
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 0.85em;
+  }
+  .cpp-label { background: rgba(255,179,71,0.15); color: var(--gold); }
+  .py-label { background: rgba(0,229,255,0.15); color: var(--accent); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 0.92em;
+  }
+  th { background: rgba(0,229,255,0.1); color: var(--accent); padding: 8px 10px; text-align: left; }
+  td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+  .quiz {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 16px 0;
+    border: 1px solid rgba(0,229,255,0.2);
+  }
+  .quiz h3 { color: var(--gold); margin-top: 0; }
+  .quiz-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: var(--code-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text);
+    padding: 10px 14px;
+    margin: 6px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.92em;
+    transition: all 0.2s;
+  }
+  .quiz-option:hover { border-color: var(--accent); background: rgba(0,229,255,0.05); }
+  .quiz-option.correct { border-color: var(--good); background: rgba(76,175,80,0.12); color: var(--good); }
+  .quiz-option.wrong { border-color: var(--bad); background: rgba(255,82,82,0.12); color: var(--bad); }
+  .quiz-option:disabled { pointer-events: none; opacity: 0.8; }
+  .quiz-feedback { margin-top: 8px; font-size: 0.9em; min-height: 20px; }
+
+  .exercise {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 20px 0;
+    border: 2px dashed rgba(255,179,71,0.3);
+  }
+  .exercise h3 { color: var(--gold); margin-top: 0; }
+
+  .progress { margin-top: 32px; padding: 12px; background: var(--card); border-radius: 8px; text-align: center; font-size: 0.85em; color: var(--text-dim); }
+
+  .rest-break {
+    background: linear-gradient(135deg, rgba(255,179,71,0.08), rgba(0,229,255,0.05));
+    border-radius: 10px;
+    padding: 14px;
+    margin: 20px 0;
+    border: 1px solid rgba(255,179,71,0.2);
+    font-size: 0.9em;
+  }
+  .rest-break strong { color: var(--gold); }
+
+  .toc {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 0.9em;
+  }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* Mobile tweaks */
+  @media (max-width: 480px) {
+    body { padding: 10px; }
+    h1 { font-size: 1.4em; }
+    pre { font-size: 0.78em; padding: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>🐍 Python 速通 · 第二课：函数</h1>
+
+<div class="toc">
+  📖 <strong>本课目录</strong><br>
+  <a href="#review">① 上节回顾</a> ·
+  <a href="#define">② 定义函数</a> ·
+  <a href="#params">③ 参数魔法</a> ·
+  <a href="#multi">④ 多返回值</a> ·
+  <a href="#lambda">⑤ Lambda</a> ·
+  <a href="#quiz">⑥ 互动测验</a> ·
+  <a href="#exercise">⑦ 翻译练习</a>
+</div>
+
+<!-- ============================ -->
+<h2 id="review">① 上节课你学到了</h2>
+<div class="card good">
+  ✅ <code>input()</code> → 永远返回字符串<br>
+  ✅ <code>[]</code> 列表 + <code>.append()</code> + <code>len()</code><br>
+  ✅ <code>//</code> 整数除法 vs <code>/</code> 浮点除法<br>
+  ✅ <code>range(2, int(n**0.5)+1)</code> — 质数 √n 优化<br>
+  ✅ VSCode 编辑 .py 文件
+</div>
+
+<p>今天学 Python 里最重要的抽象工具：<strong>函数</strong>。你 C++ 里写过 <code>int f(int x)</code>，Python 版本更简洁也更灵活 — lass uns schauen 👇</p>
+
+<!-- ============================ -->
+<h2 id="define">② 定义函数：<code>def</code></h2>
+
+<p>你的质数判断程序，用函数改写后是这样：</p>
+
+<div class="compare">
+  <div>
+    <div class="col-label cpp-label">C++</div>
+    <pre><span class="kw">bool</span> is_prime(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt; 2) <span class="kw">return false</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = 2; i*i &lt;= n; i++) {
+        <span class="kw">if</span> (n % i == 0) <span class="kw">return false</span>;
+    }
+    <span class="kw">return true</span>;
+}</pre>
+  </div>
+  <div>
+    <div class="col-label py-label">Python</div>
+    <pre><span class="kw">def</span> <span class="tag">is_prime</span>(n):
+    <span class="kw">if</span> n &lt; 2:
+        <span class="kw">return</span> <span class="kw">False</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="tag">range</span>(2, <span class="tag">int</span>(n ** 0.5) + 1):
+        <span class="kw">if</span> n % i == 0:
+            <span class="kw">return</span> <span class="kw">False</span>
+    <span class="kw">return</span> <span class="kw">True</span></pre>
+  </div>
+</div>
+
+<table>
+  <tr><th>C++</th><th>Python</th><th>说明</th></tr>
+  <tr><td><code>bool is_prime(int n)</code></td><td><code>def is_prime(n):</code></td><td>无需声明类型</td></tr>
+  <tr><td><code>{</code> 花括号</td><td><code>:</code> + 缩进</td><td>缩进就是作用域！</td></tr>
+  <tr><td><code>return false;</code></td><td><code>return False</code></td><td>大写 F，无分号</td></tr>
+  <tr><td>类型必须声明</td><td>运行时推断</td><td>鸭子类型 🦆</td></tr>
+</table>
+
+<div class="card warn">
+  <strong>⚠️ 最大坑：缩进必须一致！</strong> 4 空格或 Tab，混用直接 <code>IndentationError</code>。
+</div>
+
+<!-- ============================ -->
+<h2 id="params">③ 参数魔法 — Python 特有玩法</h2>
+
+<h3>3.1 默认参数</h3>
+
+<div class="compare">
+  <div>
+    <div class="col-label cpp-label">C++</div>
+    <pre><span class="cmt">// C++ 也有默认参数</span>
+<span class="kw">string</span> greet(<span class="kw">string</span> name, <span class="kw">string</span> g=<span class="str">"Hallo"</span>) {
+    <span class="kw">return</span> g + <span class="str">", "</span> + name + <span class="str">"!"</span>;
+}</pre>
+  </div>
+  <div>
+    <div class="col-label py-label">Python</div>
+    <pre><span class="kw">def</span> <span class="tag">greet</span>(name, greeting=<span class="str">"Hallo"</span>):
+    <span class="kw">return</span> <span class="tag">f</span><span class="str">"{greeting}, {name}!"</span>
+
+<span class="tag">print</span>(greet(<span class="str">"Felix"</span>))          <span class="cmt"># Hallo, Felix!</span>
+<span class="tag">print</span>(greet(<span class="str">"Felix"</span>, <span class="str">"Moin"</span>))  <span class="cmt"># Moin, Felix!</span></pre>
+  </div>
+</div>
+
+<p>注意 Python 的 <code>f"{...}"</code> — <strong>f-string</strong>，花括号里写变量名直接替换。比 C++ 的 <code>+</code> 拼接优雅一万倍 🎯</p>
+
+<h3>3.2 关键字参数（C++ 没有！）</h3>
+
+<div class="card">
+  <pre><span class="kw">def</span> <span class="tag">beschreibe</span>(name, alter, stadt=<span class="str">"Unbekannt"</span>):
+    <span class="kw">return</span> <span class="tag">f</span><span class="str">"{name}, {alter} Jahre, aus {stadt}"</span>
+
+<span class="cmt"># 按顺序传：</span>
+<span class="tag">print</span>(beschreibe(<span class="str">"Anna"</span>, 20, <span class="str">"Berlin"</span>))
+
+<span class="cmt"># 按名字传 — 顺序无所谓！</span>
+<span class="tag">print</span>(beschreibe(alter=20, name=<span class="str">"Anna"</span>, stadt=<span class="str">"Köln"</span>))
+
+<span class="cmt"># 混合也行：位置参数在前，关键字在后</span>
+<span class="tag">print</span>(beschreibe(<span class="str">"Anna"</span>, alter=20))</pre>
+</div>
+
+<p>关键字参数让函数调用<strong>自文档化</strong> — 看到 <code>alter=20</code> 不用翻定义就知道什么意思。</p>
+
+<!-- ============================ -->
+<h2 id="multi">④ 多返回值</h2>
+
+<div class="compare">
+  <div>
+    <div class="col-label cpp-label">C++</div>
+    <pre><span class="cmt">// 需要 struct / pair 或引用参数</span>
+<span class="kw">struct</span> Ergebnis {
+    <span class="kw">int</span> summe;
+    <span class="kw">double</span> durchschnitt;
+    <span class="kw">int</span> maximum;
+    <span class="kw">bool</span> alle_bestanden;
+};</pre>
+  </div>
+  <div>
+    <div class="col-label py-label">Python</div>
+    <pre><span class="kw">def</span> <span class="tag">analysiere_noten</span>(noten):
+    s = <span class="tag">sum</span>(noten)
+    avg = s / <span class="tag">len</span>(noten)
+    mx = <span class="tag">max</span>(noten)
+    ok = <span class="tag">all</span>(n &gt;= 60 <span class="kw">for</span> n <span class="kw">in</span> noten)
+    <span class="kw">return</span> s, avg, mx, ok
+
+<span class="cmt"># 解包接收：</span>
+summe, avg, mx, ok = analysiere_noten([85, 92, 58, 73])
+<span class="tag">print</span>(summe)  <span class="cmt"># 308</span>
+<span class="tag">print</span>(ok)     <span class="cmt"># False（58 &lt; 60）</span></pre>
+  </div>
+</div>
+
+<p>Python 一行 <code>return a, b, c, d</code> 就搞定了 — 本质是返回一个 <strong>元组</strong>（tuple），然后自动解包。</p>
+
+<div class="rest-break">
+  <strong>🧊 认知休息站</strong><br>
+  Python 这个名字不是来自蛇 🐍，而是来自喜剧团体 <em>Monty Python</em>。Guido van Rossum 是他们的粉丝。所以 Python 文档里经常出现 <code>spam</code>、<code>eggs</code> 这些梗 — 来自 Monty Python 的一个著名 sketch。
+</div>
+
+<!-- ============================ -->
+<h2 id="lambda">⑤ Lambda — 一行函数</h2>
+
+<pre><span class="cmt"># 普通函数写法</span>
+<span class="kw">def</span> <span class="tag">quadrat</span>(x):
+    <span class="kw">return</span> x ** 2
+
+<span class="cmt"># Lambda 一行版</span>
+quadrat = <span class="kw">lambda</span> x: x ** 2
+
+<span class="cmt"># 真正有用的地方：排序</span>
+studenten = [(<span class="str">"Anna"</span>, 92), (<span class="str">"Ben"</span>, 78), (<span class="str">"Clara"</span>, 95)]
+studenten.sort(key=<span class="kw">lambda</span> s: s[1])  <span class="cmt"># 按分数排序</span>
+<span class="tag">print</span>(studenten)  <span class="cmt"># [('Ben', 78), ('Anna', 92), ('Clara', 95)]</span></pre>
+
+<table>
+  <tr><th>语法</th><th>含义</th></tr>
+  <tr><td><code>lambda x: x ** 2</code></td><td>输入 x，返回 x²</td></tr>
+  <tr><td><code>lambda a, b: a + b</code></td><td>输入 a, b，返回和</td></tr>
+  <tr><td><code>lambda s: s[1]</code></td><td>取元组的第二个元素（索引 1）</td></tr>
+</table>
+
+<p>Lambda 不能写复杂逻辑（没有 if/for），只能是一个表达式。C++ 里的匿名函数 <code>[](int x){ return x*x; }</code> 就是类似的东西。</p>
+
+<!-- ============================ -->
+<h2 id="quiz">⑥ 互动测验</h2>
+
+<div class="quiz" id="q1">
+  <h3>Q1: 下面哪个是正确的 Python 函数定义？</h3>
+  <button class="quiz-option" onclick="checkQuiz('q1', 0)">A. <code>function is_prime(n) { ... }</code></button>
+  <button class="quiz-option" onclick="checkQuiz('q1', 1)" data-correct="true">B. <code>def is_prime(n): ...</code></button>
+  <button class="quiz-option" onclick="checkQuiz('q1', 2)">C. <code>def is_prime(int n): ...</code></button>
+  <button class="quiz-option" onclick="checkQuiz('q1', 3)">D. <code>fn is_prime(n) => ...</code></button>
+  <div class="quiz-feedback" id="q1-fb"></div>
+</div>
+
+<div class="quiz" id="q2">
+  <h3>Q2: <code>def f(a, b=10):</code> — 下面哪个调用会报错？</h3>
+  <button class="quiz-option" onclick="checkQuiz('q2', 0)">A. <code>f(1)</code></button>
+  <button class="quiz-option" onclick="checkQuiz('q2', 1)">B. <code>f(1, 2)</code></button>
+  <button class="quiz-option" onclick="checkQuiz('q2', 2)" data-correct="true">C. <code>f(b=2)</code></button>
+  <button class="quiz-option" onclick="checkQuiz('q2', 3)">D. <code>f(a=1, b=2)</code></button>
+  <div class="quiz-feedback" id="q2-fb"></div>
+</div>
+
+<div class="quiz" id="q3">
+  <h3>Q3: 这段代码输出什么？</h3>
+  <pre><span class="kw">def</span> <span class="tag">compute</span>(x):
+    <span class="kw">return</span> x, x**2, x**3
+a, b, c = compute(3)
+<span class="tag">print</span>(b)</pre>
+  <button class="quiz-option" onclick="checkQuiz('q3', 0)">A. <code>3</code></button>
+  <button class="quiz-option" onclick="checkQuiz('q3', 1)">B. <code>(3, 9, 27)</code></button>
+  <button class="quiz-option" onclick="checkQuiz('q3', 2)" data-correct="true">C. <code>9</code></button>
+  <button class="quiz-option" onclick="checkQuiz('q3', 3)">D. 报错</button>
+  <div class="quiz-feedback" id="q3-fb"></div>
+</div>
+
+<!-- ============================ -->
+<h2 id="exercise">⑦ 🎯 翻译练习</h2>
+
+<div class="exercise">
+  <h3>把下面的 C++ 函数翻译成 Python</h3>
+  <p>功能：接收一个成绩列表，返回总分、平均分、最高分、是否全部及格（≥60）</p>
+  
+  <pre><span class="cmt">// C++ 原版</span>
+<span class="kw">struct</span> Ergebnis {
+    <span class="kw">int</span> summe;
+    <span class="kw">double</span> durchschnitt;
+    <span class="kw">int</span> maximum;
+    <span class="kw">bool</span> alle_bestanden;
+};
+
+Ergebnis analysiere_noten(vector&lt;<span class="kw">int</span>&gt; noten) {
+    Ergebnis e;
+    e.summe = 0;
+    e.maximum = noten[0];
+    e.alle_bestanden = true;
+    
+    for (<span class="kw">int</span> n : noten) {
+        e.summe += n;
+        if (n &gt; e.maximum) e.maximum = n;
+        if (n &lt; 60) e.alle_bestanden = false;
+    }
+    
+    e.durchschnitt = (<span class="kw">double</span>)e.summe / noten.size();
+    return e;
+}</pre>
+
+  <h3 style="margin-top: 16px;">💡 提示（从易到难）</h3>
+  <ol style="margin-left: 20px; color: var(--text-dim);">
+    <li><code>sum(noten)</code> — 直接求总和</li>
+    <li><code>max(noten)</code> — 直接取最大值</li>
+    <li><code>len(noten)</code> — 列表长度</li>
+    <li><code>all(n &gt;= 60 for n in noten)</code> — 一行判断全部及格</li>
+    <li>用 <code>return a, b, c, d</code> 多返回值</li>
+  </ol>
+
+  <h3 style="margin-top: 16px;">🎁 Bonus（加分项）</h3>
+  <p>写一个 <code>benotung(punkte)</code> 函数，按照德国分数体系转换：</p>
+  <table style="max-width: 400px;">
+    <tr><th>分数范围</th><th>德国 Note</th></tr>
+    <tr><td>92-100</td><td>1 (sehr gut)</td></tr>
+    <tr><td>80-91</td><td>2 (gut)</td></tr>
+    <tr><td>65-79</td><td>3 (befriedigend)</td></tr>
+    <tr><td>50-64</td><td>4 (ausreichend)</td></tr>
+    <tr><td>&lt;50</td><td>5 (mangelhaft)</td></tr>
+  </table>
+  <p style="color: var(--text-dim);">提示：用 <code>if ... elif ... else</code></p>
+</div>
+
+<!-- ============================ -->
+<div class="progress">
+  📊 第二课进度：函数定义 → 默认参数 → 关键字参数 → 多返回值 → Lambda → 互动测验 → 翻译练习<br>
+  <span style="color: var(--accent);">✅ 第一课完成（质数判断）| 🔄 第二课进行中</span>
+</div>
+
+<script>
+// Quiz logic
+function checkQuiz(qid, optIdx) {
+  const q = document.getElementById(qid);
+  const fb = document.getElementById(qid+'-fb');
+  const btns = q.querySelectorAll('.quiz-option');
+  const chosen = btns[optIdx];
+  const isCorrect = chosen.dataset.correct === 'true';
+  
+  btns.forEach(b => b.disabled = true);
+  
+  btns.forEach((b, i) => {
+    if (b.dataset.correct === 'true') b.classList.add('correct');
+  });
+  
+  if (isCorrect) {
+    chosen.classList.add('correct');
+    fb.innerHTML = '✅ Richtig! 完全正确。';
+    fb.style.color = 'var(--good)';
+  } else {
+    chosen.classList.add('wrong');
+    fb.innerHTML = '❌ Nicht ganz. 看看绿色标记的正确答案。';
+    fb.style.color = 'var(--bad)';
+  }
+  
+  // Track progress
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = 3;
+  const answered = document.querySelectorAll('.quiz-option:disabled').length / 4;
+  // Actually count how many quizzes have been answered
+  let count = 0;
+  ['q1','q2','q3'].forEach(id => {
+    if (document.getElementById(id).querySelector('.quiz-option:disabled')) count++;
+  });
+  
+  const prog = document.querySelector('.progress span');
+  if (count >= total) {
+    // Check if all correct
+    let allCorrect = true;
+    ['q1','q2','q3'].forEach(id => {
+      const correctBtn = document.getElementById(id).querySelector('[data-correct="true"]');
+      if (!correctBtn.classList.contains('correct')) allCorrect = false;
+    });
+    if (allCorrect) {
+      prog.innerHTML = '✅ 第一课完成（质数判断）| ✅ 第二课测验 3/3 全对！🏆';
+      prog.style.color = 'var(--good)';
+    } else {
+      prog.innerHTML = '✅ 第一课完成（质数判断）| ✅ 第二课测验已完成（有错题，看看答案）';
+      prog.style.color = 'var(--warn)';
+    }
+  }
+}
+
+// Reading reminder (30 min)
+setTimeout(() => {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;justify-content:center;align-items:center;z-index:9999;';
+  overlay.innerHTML = '<div style="background:#111640;padding:32px;border-radius:12px;text-align:center;border:2px solid #ffb347;max-width:340px;"><p style="font-size:1.4em;">⏰ 已经学习 30 分钟了！</p><p style="color:#8890a8;margin:12px 0;">站起来走走，喝口水。Dein Gehirn braucht ne Pause. 😄</p><button onclick="this.parentElement.parentElement.remove()" style="background:#ffb347;border:none;color:#0a0e27;padding:10px 24px;border-radius:6px;cursor:pointer;font-size:1em;margin-top:8px;">知道了，继续</button></div>';
+  document.body.appendChild(overlay);
+}, 30 * 60 * 1000);
+</script>
+
+</body>
+</html>
