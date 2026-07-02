@@ -5,28 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Python 速通 · Felix 课件</title>
 <style>
-  :root { --bg: #0a0e27; --card: #111640; --accent: #00e5ff; --gold: #ffb347; --text: #d0d6e0; }
+  :root { --bg: #0a0e27; --card: #111640; --accent: #00e5ff; --gold: #ffb347; --text: #d0d6e0; --dim: #8890a8; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 16px; }
-  h1 { color: var(--accent); font-size: 2em; margin-bottom: 8px; }
-  .sub { color: var(--text-dim, #8890a8); margin-bottom: 32px; }
-  .lessons { display: flex; flex-direction: column; gap: 12px; max-width: 500px; width: 100%; }
-  .lesson { background: var(--card); border-radius: 10px; padding: 16px 20px; border-left: 3px solid var(--accent); text-decoration: none; color: var(--text); transition: all 0.2s; }
+  h1 { color: var(--accent); font-size: 2em; margin-bottom: 4px; }
+  .sub { color: var(--dim); margin-bottom: 32px; font-size: 0.95em; }
+  .lessons { display: flex; flex-direction: column; gap: 12px; max-width: 520px; width: 100%; }
+  .lesson { background: var(--card); border-radius: 10px; padding: 16px 20px; border-left: 3px solid var(--accent); text-decoration: none; color: var(--text); transition: all 0.2s; display: block; }
   .lesson:hover { transform: translateX(4px); border-left-color: var(--gold); }
-  .lesson .num { color: var(--accent); font-size: 0.85em; }
-  .lesson h2 { color: var(--gold); font-size: 1.1em; margin: 4px 0; }
-  .lesson p { font-size: 0.9em; color: var(--text-dim, #8890a8); }
+  .lesson .num { color: var(--accent); font-size: 0.82em; }
+  .lesson h2 { color: var(--gold); font-size: 1.08em; margin: 3px 0; }
+  .lesson p { font-size: 0.88em; color: var(--dim); }
+  .lesson.new { border-left-color: var(--gold); }
+  .lesson.new .num { color: var(--gold); }
 </style>
 </head>
 <body>
 <h1>🐍 Python 速通</h1>
-<p class="sub">Felix 的互动编程课件 · 手机友好</p>
+<p class="sub">Felix 的互动编程课件 · 手机友好 · 自动更新</p>
 <div class="lessons">
+  <a class="lesson new" href="lesson-0003-vscode-intro.html">
+    <span class="num">Lesson 0003 🆕</span>
+    <h2>VSCode 全面入门</h2>
+    <p>界面拆解 · 编辑区 · 终端 · 命令面板 · 扩展 · 快捷键 · 不只是 Python</p>
+  </a>
   <a class="lesson" href="lesson-0002-functions.html">
     <span class="num">Lesson 0002</span>
     <h2>函数 (Functions)</h2>
-    <p>def、默认参数、关键字参数、多返回值、Lambda</p>
+    <p>def · 默认参数 · 关键字参数 · 多返回值 · Lambda</p>
   </a>
 </div>
+<p style="margin-top:32px;font-size:0.8em;color:var(--dim)">📱 手机直接打开 | GitHub Pages 托管 | 课件位于 <a href="https://github.com/sfz910359-coder/python-lessons" style="color:var(--accent)">sfz910359-coder/python-lessons</a></p>
 </body>
 </html>

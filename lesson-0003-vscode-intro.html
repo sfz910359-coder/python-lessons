@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python 速通 · 第三课：VSCode 全面入门</title>
+<style>
+  :root {--bg:#0a0e27;--card:#111640;--accent:#00e5ff;--gold:#ffb347;--text:#d0d6e0;--dim:#8890a8;--code:#0d1135;--good:#4caf50;--bad:#ff5252;--warn:#ffb347}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:16px;max-width:800px;margin:0 auto}
+  h1{color:var(--accent);font-size:1.7em;margin:24px 0 8px;border-bottom:2px solid var(--accent);padding-bottom:8px}
+  h2{color:var(--gold);font-size:1.25em;margin:28px 0 10px}
+  h3{color:var(--accent);font-size:1.05em;margin:18px 0 6px}
+  p{margin:10px 0}
+  .card{background:var(--card);border-radius:10px;padding:16px;margin:12px 0;border-left:3px solid var(--accent)}
+  .card.good{border-left-color:var(--good)}
+  .card.warn{border-left-color:var(--warn)}
+  .card.bad{border-left-color:var(--bad)}
+  pre{background:var(--code);border-radius:8px;padding:12px;overflow-x:auto;font-size:0.88em;margin:8px 0;border:1px solid rgba(0,229,255,.12);line-height:1.45}
+  code{font-family:'Cascadia Code','Fira Code','JetBrains Mono',Consolas,monospace;font-size:0.92em}
+  .kw{color:#c792ea}.str{color:#9ccc65}.cmt{color:#6a737d;font-style:italic}.tag{color:var(--accent)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.9em}
+  th{background:rgba(0,229,255,.1);color:var(--accent);padding:7px 10px;text-align:left}
+  td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .quiz{background:var(--card);border-radius:10px;padding:16px;margin:14px 0;border:1px solid rgba(0,229,255,.2)}
+  .quiz h3{color:var(--gold);margin-top:0}
+  .quiz-option{display:block;width:100%;text-align:left;background:var(--code);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:9px 12px;margin:5px 0;border-radius:6px;cursor:pointer;font-size:0.9em;transition:.2s}
+  .quiz-option:hover{border-color:var(--accent);background:rgba(0,229,255,.05)}
+  .quiz-option.correct{border-color:var(--good);background:rgba(76,175,80,.12);color:var(--good)}
+  .quiz-option.wrong{border-color:var(--bad);background:rgba(255,82,82,.12);color:var(--bad)}
+  .quiz-option:disabled{pointer-events:none;opacity:.8}
+  .quiz-feedback{margin-top:6px;font-size:.88em;min-height:18px}
+  .layout{background:var(--code);border-radius:8px;padding:12px;margin:10px 0;font-family:monospace;font-size:.8em;line-height:1.3;white-space:pre;overflow-x:auto;color:var(--dim);border:1px solid rgba(0,229,255,.1)}
+  .layout b{color:var(--accent);font-weight:normal}
+  .layout i{color:var(--gold);font-style:normal}
+  .rest{background:linear-gradient(135deg,rgba(255,179,71,.06),rgba(0,229,255,.04));border-radius:10px;padding:12px;margin:16px 0;border:1px solid rgba(255,179,71,.15);font-size:.88em}
+  .rest strong{color:var(--gold)}
+  .toc{background:var(--card);border-radius:10px;padding:12px 16px;margin:12px 0;font-size:.88em}
+  .toc a{color:var(--accent);text-decoration:none}.toc a:hover{text-decoration:underline}
+  .shortcut{display:inline-block;background:var(--code);border:1px solid rgba(0,229,255,.2);border-radius:4px;padding:2px 7px;font-family:monospace;font-size:.85em;color:var(--accent);margin:0 3px}
+  @media(max-width:480px){body{padding:10px}h1{font-size:1.3em}pre{font-size:.76em;padding:8px}}
+</style>
+</head>
+<body>
+
+<h1>🖥️ 第三课：VSCode 全面入门</h1>
+
+<div class="toc">
+  📖 <strong>本课目录</strong><br>
+  <a href="#what">① VSCode 到底是什么</a> ·
+  <a href="#layout">② 界面完全拆解</a> ·
+  <a href="#edit">③ 编辑区 · 写代码的核心</a> ·
+  <a href="#sidebar">④ 侧边栏 · 五大功能</a> ·
+  <a href="#terminal">⑤ 终端 · 命令行</a> ·
+  <a href="#command">⑥ 命令面板 · 万能入口</a> ·
+  <a href="#extensions">⑦ 扩展 · VSCode 的灵魂</a> ·
+  <a href="#shortcuts">⑧ 快捷键速查</a> ·
+  <a href="#beyond">⑨ 不只是 Python</a> ·
+  <a href="#quiz">⑩ 互动测验</a>
+</div>
+
+<!-- ============ 1 ============ -->
+<h2 id="what">① VSCode 到底是什么？</h2>
+
+<p>很多人以为 VSCode 是「写 Python 的软件」—— 它远不止于此。</p>
+
+<div class="card">
+  <strong>VSCode = 代码编辑器 + 轻量 IDE + 万能工具箱</strong><br><br>
+  它本身只是一个<b>文本编辑器</b>，但通过<b>扩展（Extensions）</b>可以变成：<br>
+  • Python 开发环境<br>
+  • 网页前端设计工具（HTML/CSS/JS）<br>
+  • 数据分析平台（Jupyter Notebook）<br>
+  • Markdown 写作工具<br>
+  • Git 版本管理界面<br>
+  • 甚至可以用来写小说、记笔记
+</div>
+
+<table>
+  <tr><th>工具</th><th>相当于</th><th>VSCode 能替代吗？</th></tr>
+  <tr><td>记事本</td><td>纯文本编辑</td><td>✅ 完全可以</td></tr>
+  <tr><td>Word</td><td>排版文档</td><td>⚠️ 不推荐（用 Markdown 可以）</td></tr>
+  <tr><td>PyCharm</td><td>Python 专用 IDE</td><td>✅ 装 Python 扩展后接近</td></tr>
+  <tr><td>终端.app</td><td>命令行</td><td>✅ 内置终端</td></tr>
+  <tr><td>Finder</td><td>文件管理</td><td>✅ 侧边栏文件浏览器</td></tr>
+  <tr><td>Sublime Text</td><td>轻量编辑器</td><td>✅ 完全替代</td></tr>
+</table>
+
+<div class="rest">
+  <strong>🧊 认知休息站</strong><br>
+  VSCode 用了 <b>Electron</b> 技术 —— 把网页技术（HTML/CSS/JS）打包成桌面应用。所以它的底层其实就是 Chrome 浏览器！这也是为什么它能做这么多事情：因为任何网页能做的事，VSCode 都能做。
+</div>
+
+<!-- ============ 2 ============ -->
+<h2 id="layout">② 界面完全拆解</h2>
+
+<p>打开 VSCode 后，你看到的是这样：</p>
+
+<div class="layout"><b>┌──────────────────────────────────────────────┐</b>
+<b>│</b> Datei Bearbeiten Auswahl Anzeigen ...    <i>← 菜单栏</i>  <b>│</b>
+<b>├──────┬───────────────────────────────────────┤</b>
+<b>│</b>  📁  │                                       <b>│</b>
+<b>│</b>  🔍  │          <i>Editor · 编辑区</i>               <b>│</b>
+<b>│</b>  🔗  │       （你写代码的地方）                    <b>│</b>
+<b>│</b>  🐛  │                                       <b>│</b>
+<b>│</b>  🧩  │                                       <b>│</b>
+<b>│</b> <i>侧边栏</i> ├───────────────────────────────────────┤
+<b>│</b>      │ <i>Terminal · 终端</i>  │ <i>Ausgabe · 输出</i>     <b>│</b>
+<b>│</b>      │ （运行代码/敲命令）  │ <i>Probleme · 问题</i>    <b>│</b>
+<b>├──────┴───────────────────────────────────────┤</b>
+<b>│</b>  <i>Statusleiste · 状态栏</i>  🟢 main  Python 3.13  <b>│</b>
+<b>└──────────────────────────────────────────────┘</b></div>
+
+<p>一共 <strong>6 个区域</strong>：</p>
+
+<table>
+  <tr><th>#</th><th>区域</th><th>德语名</th><th>干什么的</th></tr>
+  <tr><td>1</td><td>菜单栏</td><td>Menüleiste</td><td>文件、编辑、查看等所有功能入口</td></tr>
+  <tr><td>2</td><td>侧边栏</td><td>Aktivitätsleiste</td><td>文件列表、搜索、Git、调试、扩展</td></tr>
+  <tr><td>3</td><td>编辑区</td><td>Editor</td><td>写代码、看代码的主区域</td></tr>
+  <tr><td>4</td><td>底部面板</td><td>Panel</td><td>终端、输出信息、错误列表</td></tr>
+  <tr><td>5</td><td>状态栏</td><td>Statusleiste</td><td>文件信息：行号、语言、编码、Git 分支</td></tr>
+  <tr><td>6</td><td>小地图</td><td>Minimap</td><td>编辑区右侧的代码缩略图（快速定位）</td></tr>
+</table>
+
+<div class="card warn">
+  <strong>常见困惑</strong>：侧边栏突然不见了？<br>
+  → 点最左边五个图标中亮着的那个（再点一次就关掉了）<br>
+  → 或者：<span class="shortcut">Cmd + B</span> 一键开关
+</div>
+
+<!-- ============ 3 ============ -->
+<h2 id="edit">③ 编辑区 · 核心工作区</h2>
+
+<p>这是你待得最久的地方。几个关键概念：</p>
+
+<h3>3.1 标签页（Tabs）</h3>
+<p>和浏览器一样，VSCode 可以同时打开多个文件，顶部有标签页切换。<br>
+<span class="shortcut">Cmd + W</span> 关闭当前文件 · <span class="shortcut">Cmd + Shift + T</span> 重新打开刚关的</p>
+
+<h3>3.2 语法高亮（Syntax Highlighting）</h3>
+<pre><span class="kw">def</span> <span class="tag">analysiere</span>(noten):       <span class="cmt"># ← 灰色：注释</span>
+    s = <span class="tag">sum</span>(noten)          <span class="cmt"># ← 紫色：关键字  青色：函数  绿色：字符串</span>
+    <span class="kw">return</span> s                 <span class="cmt"># 不同颜色 = 不同「身份」</span></pre>
+<p>不是装饰 — 它帮你<b>一眼看清代码结构</b>。哪里是函数、哪里是字符串、哪里是注释，全用颜色区分。</p>
+
+<h3>3.3 智能提示（IntelliSense）</h3>
+<p>写到一半会自动弹出补全建议：</p>
+<pre><span class="tag">print</span>(|          <span class="cmt">← 光标在这里，弹窗显示所有可用的函数/变量</span>
+<span class="cmt">→ 弹窗显示：print(value, sep, end, file, flush)</span>
+<span class="cmt">→ 按 Tab 或 Enter 补全</span></pre>
+
+<h3>3.4 多光标编辑</h3>
+<p>按住 <span class="shortcut">Alt</span>（Mac 上是 <span class="shortcut">⌥ Option</span>）然后鼠标点多个位置 → 同时编辑多处！</p>
+
+<h3>3.5 代码折叠</h3>
+<p>行号左边的小三角 <strong>▸</strong> → 点击折叠/展开整个函数。大文件必备。</p>
+
+<!-- ============ 4 ============ -->
+<h2 id="sidebar">④ 侧边栏 · 五大功能</h2>
+
+<p>最左边竖着的一排图标，从上到下：</p>
+
+<table>
+  <tr><th>图标</th><th>德语</th><th>功能</th><th>快捷键</th></tr>
+  <tr><td>📁</td><td>Explorer</td><td><b>文件浏览器</b>：打开/新建/删除/移动文件</td><td><span class="shortcut">Cmd+Shift+E</span></td></tr>
+  <tr><td>🔍</td><td>Suchen</td><td><b>搜索</b>：在<b>整个文件夹</b>中搜索文字</td><td><span class="shortcut">Cmd+Shift+F</span></td></tr>
+  <tr><td>🔗</td><td>Quellcodeverwaltung</td><td><b>Git 版本管理</b>：查看改动、提交代码</td><td><span class="shortcut">Ctrl+Shift+G</span></td></tr>
+  <tr><td>🐛</td><td>Ausführen und Debuggen</td><td><b>调试</b>：断点、单步执行、看变量</td><td><span class="shortcut">Cmd+Shift+D</span></td></tr>
+  <tr><td>🧩</td><td>Erweiterungen</td><td><b>扩展商店</b>：安装新功能</td><td><span class="shortcut">Cmd+Shift+X</span></td></tr>
+</table>
+
+<div class="card">
+  <h3 style="margin-top:0">📁 Explorer · 重要概念：工作区（Arbeitsbereich）</h3>
+  <p>VSCode 不是「打开一个文件」— 它<b>打开一个文件夹</b>作为工作区。</p>
+  <p>所以你会看到整个文件夹的结构：子文件夹、所有文件。这和 Word 完全不同 — Word 只打开一个 .docx，VSCode 打开整个项目。</p>
+  <p><strong>建议</strong>：把你所有 Python 练习放在一个文件夹里（比如 <code>Programmieren lernen/</code>），然后 <code>Datei → Ordner öffnen</code> 打开它。</p>
+</div>
+
+<!-- ============ 5 ============ -->
+<h2 id="terminal">⑤ 终端（Terminal）</h2>
+
+<p>底部面板里的终端，和 Mac 自带的「终端.app」是<b>同一个东西</b>。</p>
+
+<p>为什么要在 VSCode 里用终端？</p>
+
+<div class="card good">
+  ✅ 不用来回切换窗口<br>
+  ✅ 终端的当前目录自动 = 你打开的项目文件夹<br>
+  ✅ 报错时可以点击跳转到对应代码行<br>
+  ✅ 可以同时开多个终端（点 + 号）
+</div>
+
+<p>常用终端命令：</p>
+<pre><span class="cmt"># 运行 Python 文件</span>
+python3 uebung.py
+
+<span class="cmt"># 安装 Python 包</span>
+pip3 install irgendein-paket
+
+<span class="cmt"># 看当前文件夹有什么</span>
+ls
+
+<span class="cmt"># 进入子文件夹</span>
+cd Programmieren\ lernen/</pre>
+
+<div class="card warn">
+  <strong>如果终端不见了</strong>：菜单 <code>Ansicht → Terminal</code>（查看 → 终端）<br>
+  或者快捷键 <span class="shortcut">Ctrl + `</span>（反引号，Tab 上面那个键）
+</div>
+
+<!-- ============ 6 ============ -->
+<h2 id="command">⑥ 命令面板 · 万能入口</h2>
+
+<p>这是 VSCode <strong>最重要的快捷键</strong>，没有之一：</p>
+
+<div class="card" style="text-align:center;font-size:1.3em">
+  <span class="shortcut" style="font-size:1.1em">Cmd + Shift + P</span><br>
+  <span style="font-size:.7em;color:var(--dim)">德语名：Befehlspalette</span>
+</div>
+
+<p>按下去弹出一个搜索框，<strong>所有 VSCode 功能都在里面</strong>。你不需要记住菜单在哪 — 搜就完了：</p>
+
+<table>
+  <tr><th>搜这个</th><th>效果</th></tr>
+  <tr><td><code>Sprache</code></td><td>切换界面语言（中/德/英）</td></tr>
+  <tr><td><code>Theme</code></td><td>换配色主题</td></tr>
+  <tr><td><code>Python: Interpreter</code></td><td>选择 Python 版本</td></tr>
+  <tr><td><code>Terminal</code></td><td>打开/新建终端</td></tr>
+  <tr><td><code>Einstellungen</code></td><td>打开设置</td></tr>
+  <tr><td><code>Zoom</code></td><td>放大/缩小界面</td></tr>
+</table>
+
+<div class="rest">
+  <strong>💡 Profi-Tipp</strong><br>
+  记不住按钮在哪？<span class="shortcut">Cmd + Shift + P</span> 搜一下。这是 VSCode 老手的肌肉记忆。
+</div>
+
+<!-- ============ 7 ============ -->
+<h2 id="extensions">⑦ 扩展（Erweiterungen）· VSCode 的灵魂</h2>
+
+<p>VSCode 出厂时只是一个<b>高级文本编辑器</b>。所有「超能力」都来自扩展。</p>
+
+<h3>你已经装了的</h3>
+<table>
+  <tr><th>扩展</th><th>作用</th></tr>
+  <tr><td>Python (ms-python)</td><td>语法高亮、智能提示、运行、调试 Python</td></tr>
+  <tr><td>Pylance</td><td>更聪明的代码补全（类型推断、自动导入）</td></tr>
+  <tr><td>Python Debugger</td><td>断点调试（F5 运行就是它在干活）</td></tr>
+  <tr><td>German Language Pack</td><td>德语界面翻译</td></tr>
+</table>
+
+<h3>以后可能会用到的（不需要现在装）</h3>
+<table>
+  <tr><th>扩展</th><th>干什么</th></tr>
+  <tr><td>Jupyter</td><td>在 VSCode 里跑 Jupyter Notebook（数据分析）</td></tr>
+  <tr><td>Markdown Preview</td><td>写 .md 文件时实时预览</td></tr>
+  <tr><td>GitHub Copilot</td><td>AI 自动补全代码（付费）</td></tr>
+  <tr><td>Live Server</td><td>一键启动网页预览服务器</td></tr>
+  <tr><td>Prettier</td><td>自动格式化代码（统一风格）</td></tr>
+</table>
+
+<!-- ============ 8 ============ -->
+<h2 id="shortcuts">⑧ 快捷键速查表</h2>
+
+<p>记住这 <strong>10 个</strong>，你就能流畅操作了：</p>
+
+<table>
+  <tr><th>快捷键</th><th>功能</th><th>场景</th></tr>
+  <tr><td><span class="shortcut">Cmd+S</span></td><td>保存</td><td>最常用，养成习惯</td></tr>
+  <tr><td><span class="shortcut">Cmd+Z</span></td><td>撤销</td><td>写错了撤销</td></tr>
+  <tr><td><span class="shortcut">Cmd+Shift+Z</span></td><td>重做</td><td>撤销过头了恢复</td></tr>
+  <tr><td><span class="shortcut">Cmd+N</span></td><td>新建文件</td><td>新建空白文件</td></tr>
+  <tr><td><span class="shortcut">Cmd+W</span></td><td>关闭当前标签</td><td>关掉不用的文件</td></tr>
+  <tr><td><span class="shortcut">Cmd+B</span></td><td>开关侧边栏</td><td>侧边栏碍事时关掉</td></tr>
+  <tr><td><span class="shortcut">Ctrl+`</span></td><td>开关终端</td><td>底部终端开关</td></tr>
+  <tr><td><span class="shortcut">Cmd+/</span></td><td>注释/取消注释</td><td>给代码加/去 #</td></tr>
+  <tr><td><span class="shortcut">Cmd+F</span></td><td>当前文件内搜索</td><td>找变量/函数</td></tr>
+  <tr><td><span class="shortcut">Cmd+Shift+P</span></td><td>命令面板</td><td>万能入口</td></tr>
+</table>
+
+<h3>Mac 特殊按键对照</h3>
+<table>
+  <tr><th>符号</th><th>按键</th><th>在哪</th></tr>
+  <tr><td>⌘</td><td>Command (Cmd)</td><td>空格键左右</td></tr>
+  <tr><td>⌥</td><td>Option (Alt)</td><td>Cmd 旁边</td></tr>
+  <tr><td>⌃</td><td>Control (Ctrl)</td><td>键盘左下角</td></tr>
+  <tr><td>⇧</td><td>Shift</td><td>大写键</td></tr>
+  <tr><td>Fn</td><td>功能键</td><td>左下角，配合 F1-F12 使用</td></tr>
+</table>
+
+<!-- ============ 9 ============ -->
+<h2 id="beyond">⑨ 不只是 Python — VSCode 还能做什么</h2>
+
+<div class="card">
+  <h3 style="margin-top:0">🌐 网页开发</h3>
+  <p>HTML、CSS、JavaScript 原生支持。装 <code>Live Server</code> 扩展后，保存即刷新浏览器预览。</p>
+  <p>你已经写过的 <code>lesson-0002-functions.html</code> 就是用 VSCode 编辑最合适的文件类型。</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">📝 写 Markdown</h3>
+  <p>所有 <code>.md</code> 文件（比如你的学习笔记、项目文档）都是 Markdown 格式。<br>
+  按 <span class="shortcut">Cmd+Shift+V</span> 可以实时预览排版效果。</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">📊 数据分析</h3>
+  <p>装 Jupyter 扩展后，可以在 VSCode 里直接跑 Jupyter Notebook。<br>
+  大学里处理数据、画图表、做实验报告都能用。</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">🔄 Git 版本管理</h3>
+  <p>不需要学命令行 Git。左侧 🔗 图标点进去：<br>
+  • 看改了什么<br>
+  • 一键提交<br>
+  • 同步到 GitHub<br>
+  大学做小组项目时必备。</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">🌍 多语言支持</h3>
+  <p>不只是 Python。VSCode 原生支持或通过扩展支持：<br>
+  C/C++, Java, JavaScript, TypeScript, Go, Rust, Ruby, PHP, Swift, R, SQL, HTML/CSS, JSON, YAML, XML...</p>
+</div>
+
+<!-- ============ 10 ============ -->
+<h2 id="quiz">⑩ 互动测验</h2>
+
+<div class="quiz" id="q1">
+  <h3>Q1: VSCode 的「命令面板」快捷键是？</h3>
+  <button class="quiz-option" onclick="check('q1',0)">A. <span class="shortcut">Cmd + P</span></button>
+  <button class="quiz-option" onclick="check('q1',1)">B. <span class="shortcut">Cmd + F</span></button>
+  <button class="quiz-option" onclick="check('q1',2)" data-correct="true">C. <span class="shortcut">Cmd + Shift + P</span></button>
+  <button class="quiz-option" onclick="check('q1',3)">D. <span class="shortcut">Ctrl + `</span></button>
+  <div class="quiz-feedback" id="q1-fb"></div>
+</div>
+
+<div class="quiz" id="q2">
+  <h3>Q2: 终端突然不见了，怎么找回来？</h3>
+  <button class="quiz-option" onclick="check('q2',0)">A. 重启 VSCode</button>
+  <button class="quiz-option" onclick="check('q2',1)" data-correct="true">B. 按 <span class="shortcut">Ctrl + `</span> 或者菜单 Ansicht → Terminal</button>
+  <button class="quiz-option" onclick="check('q2',2)">C. 重新安装 VSCode</button>
+  <button class="quiz-option" onclick="check('q2',3)">D. 关掉再打开那个文件</button>
+  <div class="quiz-feedback" id="q2-fb"></div>
+</div>
+
+<div class="quiz" id="q3">
+  <h3>Q3: VSCode 的「工作区」是什么概念？</h3>
+  <button class="quiz-option" onclick="check('q3',0)">A. 一个 .py 文件</button>
+  <button class="quiz-option" onclick="check('q3',1)">B. 桌面壁纸</button>
+  <button class="quiz-option" onclick="check('q3',2)">C. 保存的窗口布局</button>
+  <button class="quiz-option" onclick="check('q3',3)" data-correct="true">D. 一个文件夹，包含项目的所有文件</button>
+  <div class="quiz-feedback" id="q3-fb"></div>
+</div>
+
+<div class="quiz" id="q4">
+  <h3>Q4: VSCode 能运行 Python 代码，靠的是什么？</h3>
+  <button class="quiz-option" onclick="check('q4',0)">A. VSCode 自带 Python</button>
+  <button class="quiz-option" onclick="check('q4',1)">B. 魔法</button>
+  <button class="quiz-option" onclick="check('q4',2)" data-correct="true">C. Python 扩展（Extension）+ 电脑上安装的 Python</button>
+  <button class="quiz-option" onclick="check('q4',3)">D. 云端服务器</button>
+  <div class="quiz-feedback" id="q4-fb"></div>
+</div>
+
+<!-- ============ 实操 ============ -->
+<h2>🎯 实操任务</h2>
+
+<div class="card">
+  <p>打开 VSCode，完成以下 5 件事（按顺序）：</p>
+  <ol style="margin-left:18px;line-height:2">
+    <li><span class="shortcut">Cmd+Shift+P</span> → 输入 <code>Theme</code> → 换个你喜欢的配色</li>
+    <li><span class="shortcut">Ctrl+`</span> 打开终端 → 输入 <code>python3 --version</code> 回车</li>
+    <li>在左边 Explorer 右键 → Neue Datei → 创建 <code>test.py</code></li>
+    <li>输入 <code>print("Hallo VSCode!")</code> → <span class="shortcut">Cmd+S</span> 保存</li>
+    <li>右键代码区 → Python ausführen → Python-Datei im Terminal ausführen</li>
+  </ol>
+  <p style="color:var(--gold);margin-top:8px">全部成功 = 你已掌握 VSCode 基本操作 ✅</p>
+</div>
+
+<div class="progress" style="margin-top:24px;padding:12px;background:var(--card);border-radius:8px;text-align:center;font-size:.85em;color:var(--dim)">
+  📊 第三课进度：<span style="color:var(--accent)">VSCode 是什么 → 界面拆解 → 编辑区 → 侧边栏 → 终端 → 命令面板 → 扩展 → 快捷键 → 其他用途 → 测验</span>
+</div>
+
+<script>
+function check(qid,n){
+  const fb=document.getElementById(qid+'-fb');
+  const btns=document.querySelectorAll('#'+qid+' .quiz-option');
+  const c=btns[n];
+  btns.forEach(b=>b.disabled=true);
+  btns.forEach(b=>{if(b.dataset.correct)b.classList.add('correct')});
+  if(c.dataset.correct){c.classList.add('correct');fb.innerHTML='✅ Richtig!';fb.style.color='var(--good)'}
+  else{c.classList.add('wrong');fb.innerHTML='❌ Schau auf die grün markierte Antwort.';fb.style.color='var(--bad)'}
+}
+
+setTimeout(()=>{
+  const o=document.createElement('div');
+  o.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);display:flex;justify-content:center;align-items:center;z-index:9999';
+  o.innerHTML='<div style="background:#111640;padding:28px;border-radius:12px;text-align:center;border:2px solid #ffb347;max-width:300px"><p style="font-size:1.2em">⏰ 30 Minuten!</p><p style="color:#8890a8;margin:10px 0">Steh auf, trink Wasser. Dein Gehirn braucht ne Pause.</p><button onclick="this.parentElement.parentElement.remove()" style="background:#ffb347;border:none;color:#0a0e27;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:1em">OK, weiter</button></div>';
+  document.body.appendChild(o)
+},30*60*1000);
+</script>
+
+</body>
+</html>
