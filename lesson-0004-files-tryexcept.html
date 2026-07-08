@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python-Crashkurs · Lektion 4: Dateien & Fehler</title>
+<style>:root{--bg:#0a0e27;--card:#111640;--accent:#00e5ff;--gold:#ffb347;--text:#d0d6e0;--dim:#8890a8;--code:#0d1135;--good:#4caf50;--bad:#ff5252;--warn:#ffb347}*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:16px;max-width:800px;margin:0 auto}h1{color:var(--accent);font-size:1.7em;margin:24px 0 8px;border-bottom:2px solid var(--accent);padding-bottom:8px}h2{color:var(--gold);font-size:1.25em;margin:28px 0 10px}h3{color:var(--accent);font-size:1.05em;margin:18px 0 6px}p{margin:10px 0}.card{background:var(--card);border-radius:10px;padding:16px;margin:12px 0;border-left:3px solid var(--accent)}.card.good{border-left-color:var(--good)}.card.warn{border-left-color:var(--warn)}.card.bad{border-left-color:var(--bad)}pre{background:var(--code);border-radius:8px;padding:12px;overflow-x:auto;font-size:.88em;margin:8px 0;border:1px solid rgba(0,229,255,.12);line-height:1.45}code{font-family:'Cascadia Code','Fira Code','Consolas',monospace;font-size:.92em}.kw{color:#c792ea}.str{color:#9ccc65}.cmt{color:#6a737d;font-style:italic}.tag{color:var(--accent)}.num{color:var(--gold)}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.9em}th{background:rgba(0,229,255,.1);color:var(--accent);padding:7px 10px;text-align:left}td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.06)}.quiz{background:var(--card);border-radius:10px;padding:16px;margin:14px 0;border:1px solid rgba(0,229,255,.2)}.quiz h3{color:var(--gold);margin-top:0}.quiz-option{display:block;width:100%;text-align:left;background:var(--code);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:9px 12px;margin:5px 0;border-radius:6px;cursor:pointer;font-size:.9em;transition:.2s}.quiz-option:hover{border-color:var(--accent);background:rgba(0,229,255,.05)}.quiz-option.correct{border-color:var(--good);background:rgba(76,175,80,.12);color:var(--good)}.quiz-option.wrong{border-color:var(--bad);background:rgba(255,82,82,.12);color:var(--bad)}.quiz-option:disabled{pointer-events:none;opacity:.8}.quiz-feedback{margin-top:6px;font-size:.88em;min-height:18px}.snack{background:linear-gradient(135deg,rgba(255,179,71,.06),rgba(0,229,255,.04));border-radius:10px;padding:12px;margin:16px 0;border:1px solid rgba(255,179,71,.15);font-size:.88em}.snack strong{color:var(--gold)}.toc{background:var(--card);border-radius:10px;padding:12px 16px;margin:12px 0;font-size:.88em}.toc a{color:var(--accent);text-decoration:none}.toc a:hover{text-decoration:underline}.cn{color:var(--bad);font-size:.8em;font-weight:normal;margin-left:4px}@media(max-width:480px){body{padding:10px}h1{font-size:1.3em}pre{font-size:.76em;padding:8px}}</style></head>
+<body>
+<h1>🐍 Lektion 4: Dateien lesen, schreiben & Fehler abfangen</h1>
+<div class="toc">📖 <strong>Heute:</strong> <a href="#open">① Dateien öffnen</a> · <a href="#write">② Dateien schreiben</a> · <a href="#with">③ <code>with</code></a> · <a href="#try">④ <code>try/except</code></a> · <a href="#paths">⑤ Pfade</a> · <a href="#quiz">⑥ Quiz</a> · <a href="#aufgabe">⑦ Aufgabe</a></div>
+
+<h2 id="open">① Dateien öffnen — <code>open()</code></h2>
+<p>Bisher hat dein Programm nur mit Dingen gearbeitet, die du <strong>direkt eingetippt</strong> hast. Aber richtige Programme lesen und speichern Daten in <strong>Dateien</strong>.</p>
+<div class="card"><h3 style="margin-top:0">Eine Textdatei lesen:</h3><pre><span class="cmt"># datei.txt enthält: "Hallo Felix!"</span>
+<span class="tag">f</span> = <span class="tag">open</span>(<span class="str">"datei.txt"</span>, <span class="str">"r"</span>)     <span class="cmt"># "r" = read = lesen</span>
+inhalt = f.<span class="tag">read</span>()                <span class="cmt"># ganze Datei einlesen</span>
+<span class="tag">print</span>(inhalt)                   <span class="cmt"># Hallo Felix!</span>
+f.<span class="tag">close</span>()                       <span class="cmt"># Datei wieder zumachen!</span></pre></div>
+<table><tr><th>Modus</th><th>Bedeutung</th><th>Was passiert?</th></tr><tr><td><code>"r"</code></td><td>read <span class="cn">[读]</span></td><td>Nur lesen. Datei muss existieren.</td></tr><tr><td><code>"w"</code></td><td>write <span class="cn">[写]</span></td><td>Schreiben. <strong>Löscht</strong> alten Inhalt!</td></tr><tr><td><code>"a"</code></td><td>append <span class="cn">[追加]</span></td><td>Anhängen. Altes bleibt, Neues kommt hinten dran.</td></tr></table>
+<div class="snack"><strong>🍪 Snack:</strong> Dateien sind einfach nur lange Strings auf der Festplatte. <code>f.read()</code> gibt dir den GESAMTEN Inhalt als EINEN String — mit allen Zeilenumbrüchen (<code>\n</code>).</div>
+
+<h2 id="write">② Dateien schreiben</h2>
+<div class="card"><pre><span class="tag">f</span> = <span class="tag">open</span>(<span class="str">"notizen.txt"</span>, <span class="str">"w"</span>)   <span class="cmt"># "w" = write — überschreibt!</span>
+f.<span class="tag">write</span>(<span class="str">"Heute Python gelernt.\n"</span>)
+f.<span class="tag">write</span>(<span class="str">"Morgen weiter.\n"</span>)
+f.<span class="tag">close</span>()</pre></div>
+<h3>Zeilenweise lesen:</h3>
+<pre><span class="tag">f</span> = <span class="tag">open</span>(<span class="str">"notizen.txt"</span>, <span class="str">"r"</span>)
+<span class="kw">for</span> zeile <span class="kw">in</span> f:
+    <span class="tag">print</span>(<span class="str">"→"</span>, zeile.strip())   <span class="cmt"># .strip() entfernt \n</span>
+f.<span class="tag">close</span>()</pre>
+
+<h2 id="with">③ <code>with</code> — der Lebensretter</h2>
+<div class="card bad"><strong>Das Problem:</strong> Du machst <code>open()</code>, dein Programm crasht, <code>close()</code> wird nie aufgerufen. → <strong>Datenverlust!</strong></div>
+<div class="card good"><strong>Die Lösung: <code>with</code></strong><pre><span class="kw">with</span> <span class="tag">open</span>(<span class="str">"datei.txt"</span>, <span class="str">"r"</span>) <span class="kw">as</span> f:
+    inhalt = f.<span class="tag">read</span>()
+<span class="cmt"># Kein close() nötig! with macht das automatisch.</span></pre></div>
+<p><strong>Merkregel</strong>: Immer <code>with open(...) as f:</code> benutzen.</p>
+
+<h2 id="try">④ <code>try/except</code> vertiefen</h2>
+<div class="card"><pre><span class="kw">try</span>:
+    <span class="tag">f</span> = <span class="tag">open</span>(<span class="str">"gibt_es_nicht.txt"</span>, <span class="str">"r"</span>)
+    inhalt = f.<span class="tag">read</span>()
+    zahl = <span class="tag">int</span>(inhalt)
+<span class="kw">except</span> <span class="tag">FileNotFoundError</span>:
+    <span class="tag">print</span>(<span class="str">"❌ Datei existiert nicht!"</span>)
+<span class="kw">except</span> <span class="tag">ValueError</span>:
+    <span class="tag">print</span>(<span class="str">"❌ Inhalt ist keine Zahl!"</span>)
+<span class="kw">except</span> <span class="tag">Exception</span> <span class="kw">as</span> e:
+    <span class="tag">print</span>(<span class="str">"❌ Irgendwas anderes:"</span>, e)
+<span class="kw">else</span>:
+    <span class="tag">print</span>(<span class="str">"✅ Alles gut! Zahl ="</span>, zahl)
+<span class="kw">finally</span>:
+    <span class="tag">print</span>(<span class="str">"🧹 Aufräumen... (läuft IMMER)"</span>)</pre></div>
+<table><tr><th>Block</th><th>Wann läuft er?</th></tr><tr><td><code>try:</code></td><td>Der gefährliche Code</td></tr><tr><td><code>except Fehlertyp:</code></td><td>Nur wenn DIESER Fehler auftritt</td></tr><tr><td><code>else:</code></td><td>Nur wenn KEIN Fehler passiert</td></tr><tr><td><code>finally:</code></td><td>Läuft IMMER — egal ob Fehler oder nicht</td></tr></table>
+
+<h2 id="paths">⑤ Pfade verstehen</h2>
+<div class="card"><pre><span class="cmt"># Relativer Pfad — vom aktuellen Ordner aus</span>
+<span class="tag">open</span>(<span class="str">"daten.txt"</span>)           <span class="cmt"># gleicher Ordner wie das Skript</span>
+<span class="cmt"># Absoluter Pfad — von der Wurzel</span>
+<span class="tag">open</span>(<span class="str">"/Users/zsf/Desktop/daten.txt"</span>)  <span class="cmt"># Mac/Linux</span></pre></div>
+<div class="snack"><strong>🍪 Snack:</strong> Das Dateisystem ist ein riesiger Baum. <code>/</code> ist die Wurzel. <code>/Users/zsf/Desktop</code> heißt: "Geh von / zu Users, dann zu zsf, dann zu Desktop." Auf Windows: <code>C:\</code> — gleiche Idee.</div>
+
+<h2 id="quiz">⑥ Quiz</h2>
+<div class="quiz" id="q1"><h3>Q1: Was passiert bei <code>open("test.txt","w")</code> wenn test.txt schon existiert?</h3><button class="quiz-option" data-correct="true" onclick="check('q1',0)">A. Die alte Datei wird gelöscht und neu geschrieben.</button><button class="quiz-option" onclick="check('q1',1)">B. Neuer Inhalt wird angehängt.</button><button class="quiz-option" onclick="check('q1',2)">C. Es gibt einen Fehler.</button><button class="quiz-option" onclick="check('q1',3)">D. Nichts passiert.</button><div class="quiz-feedback" id="q1-fb"></div></div>
+<div class="quiz" id="q2"><h3>Q2: Warum <code>with open(...) as f:</code> statt <code>f=open(...)</code>?</h3><button class="quiz-option" onclick="check('q2',0)">A. Es ist schneller.</button><button class="quiz-option" data-correct="true" onclick="check('q2',1)">B. close() wird automatisch aufgerufen — auch bei Fehlern.</button><button class="quiz-option" onclick="check('q2',2)">C. Man kann damit nur lesen.</button><div class="quiz-feedback" id="q2-fb"></div></div>
+<div class="quiz" id="q3"><h3>Q3: Welcher Block in try/except läuft IMMER?</h3><button class="quiz-option" onclick="check('q3',0)">A. except</button><button class="quiz-option" onclick="check('q3',1)">B. else</button><button class="quiz-option" data-correct="true" onclick="check('q3',2)">C. finally</button><button class="quiz-option" onclick="check('q3',3)">D. try</button><div class="quiz-feedback" id="q3-fb"></div></div>
+<div class="quiz" id="q4"><h3>Q4: Was macht <code>\n</code> in einem String?</h3><button class="quiz-option" data-correct="true" onclick="check('q4',0)">A. Einen Zeilenumbruch.</button><button class="quiz-option" onclick="check('q4',1)">B. Ein großes N.</button><button class="quiz-option" onclick="check('q4',2)">C. Löscht die Zeile.</button><div class="quiz-feedback" id="q4-fb"></div></div>
+
+<h2 id="aufgabe">⑦ Aufgabe: Lern-Tagebuch</h2>
+<div class="card"><p>Schreib ein Programm, das dein <strong>persönliches Lerntagebuch</strong> führt:</p><ol style="margin-left:18px;line-height:2"><li>Fragt: <em>"Was hast du heute gelernt?"</em></li><li>Hängt die Antwort an <code>lerntagebuch.txt</code> an — mit Datum</li><li>Fragt: <em>"Soll ich dir zeigen, was du gelernt hast? (j/n)"</em></li><li>Wenn "j" → zeigt alle bisherigen Einträge</li></ol></div>
+<h3>Gerüst:</h3>
+<pre><span class="kw">from</span> datetime <span class="kw">import</span> datetime  <span class="cmt"># für das Datum</span>
+heute = datetime.now().strftime(<span class="str">"%d.%m.%Y"</span>)  <span class="cmt"># z.B. "03.07.2026"</span>
+eintrag = <span class="tag">input</span>(<span class="str">"Was hast du heute gelernt? "</span>)
+<span class="kw">with</span> <span class="tag">open</span>(<span class="str">"lerntagebuch.txt"</span>, <span class="str">"a"</span>) <span class="kw">as</span> f:
+    f.<span class="tag">write</span>(<span class="str">f</span><span class="str">"{heute}: {eintrag}\n"</span>)</pre>
+<div class="snack"><strong>💡 Tipp:</strong> <code>datetime</code> ist ein <strong>Modul</strong> (kommt in Lektion 5). <code>datetime.now()</code> = aktuelle Uhrzeit, <code>.strftime("%d.%m.%Y")</code> = deutsches Datum.</div>
+<div class="progress" style="margin-top:24px;padding:12px;background:var(--card);border-radius:8px;text-align:center;font-size:.85em;color:var(--dim)">📊 Lektion 4: open() → read/write/append → with → try/except → Pfade → Quiz → Lerntagebuch</div>
+<script>
+function check(qid,n){const fb=document.getElementById(qid+'-fb'),btns=document.querySelectorAll('#'+qid+' .quiz-option'),c=btns[n];btns.forEach(b=>b.disabled=true);btns.forEach(b=>{if(b.dataset.correct)b.classList.add('correct')});c.dataset.correct?(c.classList.add('correct'),fb.innerHTML='✅ Richtig!',fb.style.color='var(--good)'):(c.classList.add('wrong'),fb.innerHTML='❌ Schau auf die grüne Antwort.',fb.style.color='var(--bad)')}
+setTimeout(()=>{const o=document.createElement('div');o.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);display:flex;justify-content:center;align-items:center;z-index:9999';o.innerHTML='<div style="background:#111640;padding:28px;border-radius:12px;text-align:center;border:2px solid #ffb347;max-width:300px"><p style="font-size:1.2em">⏰ 30 Minuten!</p><p style="color:#8890a8;margin:10px 0">Steh auf, trink Wasser.</p><button onclick="this.parentElement.parentElement.remove()" style="background:#ffb347;border:none;color:#0a0e27;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:1em">OK, weiter</button></div>';document.body.appendChild(o)},30*60*1000);
+</script></body></html>
