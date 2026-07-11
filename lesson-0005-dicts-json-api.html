@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Lektion 5: Dicts, JSON & API · Python-Crashkurs</title>
+<style>:root{--bg:#0a0e27;--card:#111640;--accent:#00e5ff;--gold:#ffb347;--text:#d0d6e0;--dim:#8890a8;--code:#0d1135;--good:#4caf50;--bad:#ff5252;--warn:#ffb347}*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:16px;max-width:800px;margin:0 auto}h1{color:var(--accent);font-size:1.7em;margin:24px 0 8px;border-bottom:2px solid var(--accent);padding-bottom:8px}h2{color:var(--gold);font-size:1.25em;margin:28px 0 10px}h3{color:var(--accent);font-size:1.05em;margin:18px 0 6px}p{margin:10px 0}.card{background:var(--card);border-radius:10px;padding:16px;margin:12px 0;border-left:3px solid var(--accent)}.card.good{border-left-color:var(--good)}.card.warn{border-left-color:var(--warn)}.card.bad{border-left-color:var(--bad)}pre{background:var(--code);border-radius:8px;padding:12px;overflow-x:auto;font-size:.88em;margin:8px 0;border:1px solid rgba(0,229,255,.12);line-height:1.45}code{font-family:'Cascadia Code','Fira Code','Consolas',monospace;font-size:.92em}.kw{color:#c792ea}.str{color:#9ccc65}.cmt{color:#6a737d;font-style:italic}.tag{color:var(--accent)}.num{color:var(--gold)}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.9em}th{background:rgba(0,229,255,.1);color:var(--accent);padding:7px 10px;text-align:left}td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.06)}.quiz{background:var(--card);border-radius:10px;padding:16px;margin:14px 0;border:1px solid rgba(0,229,255,.2)}.quiz h3{color:var(--gold);margin-top:0}.quiz-option{display:block;width:100%;text-align:left;background:var(--code);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:9px 12px;margin:5px 0;border-radius:6px;cursor:pointer;font-size:.9em;transition:.2s}.quiz-option:hover{border-color:var(--accent);background:rgba(0,229,255,.05)}.quiz-option.correct{border-color:var(--good);background:rgba(76,175,80,.12);color:var(--good)}.quiz-option.wrong{border-color:var(--bad);background:rgba(255,82,82,.12);color:var(--bad)}.quiz-option:disabled{pointer-events:none;opacity:.8}.quiz-feedback{margin-top:6px;font-size:.88em;min-height:18px}.snack{background:linear-gradient(135deg,rgba(255,179,71,.06),rgba(0,229,255,.04));border-radius:10px;padding:12px;margin:16px 0;border:1px solid rgba(255,179,71,.15);font-size:.88em}.snack strong{color:var(--gold)}.toc{background:var(--card);border-radius:10px;padding:12px 16px;margin:12px 0;font-size:.88em}.toc a{color:var(--accent);text-decoration:none}.toc a:hover{text-decoration:underline}.cn{color:var(--bad);font-size:.8em;margin-left:4px}@media(max-width:480px){body{padding:10px}h1{font-size:1.3em}pre{font-size:.76em;padding:8px}}</style></head><body>
+
+<h1>🐍 Lektion 5: Dicts, JSON & API-Grundidee</h1>
+<div class="toc">📖 <a href="#dict">① Dicts</a> · <a href="#ops">② Operationen</a> · <a href="#json">③ JSON</a> · <a href="#api">④ Was ist eine API?</a> · <a href="#quiz">⑤ Quiz</a> · <a href="#aufgabe">⑥ Aufgabe</a></div>
+
+<!-- ========= 1 ========= -->
+<h2 id="dict">① Dictionary — Was ist das?</h2>
+<p>Bisher kanntest du Listen: <code>["Pizza", "Burger"]</code>. Aber was, wenn du zu jedem Essen den Preis speichern willst?</p>
+
+<div class="card">
+  <h3 style="margin-top:0">Liste vs Dictionary</h3>
+  <pre><span class="cmt"># Liste: Zugriff über Position (Index)</span>
+preise = [8.50, 6.00, 3.50]
+<span class="tag">print</span>(preise[0])          <span class="cmt"># 8.50 — du musst WISSEN, dass Pizza an Position 0 steht</span>
+
+<span class="cmt"># Dictionary: Zugriff über NAME (Key)</span>
+preise = {<span class="str">"Pizza"</span>: 8.50, <span class="str">"Burger"</span>: 6.00, <span class="str">"Pommes"</span>: 3.50}
+<span class="tag">print</span>(preise[<span class="str">"Pizza"</span>])      <span class="cmt"># 8.50 — klar und lesbar!</span></pre>
+</div>
+
+<h3>Die Idee: Schlüssel → Wert</h3>
+<table>
+  <tr><th>Schlüssel (Key) <span class="cn">[键]</span></th><th>Wert (Value) <span class="cn">[值]</span></th></tr>
+  <tr><td><code>"Pizza"</code></td><td><code>8.50</code></td></tr>
+  <tr><td><code>"Burger"</code></td><td><code>6.00</code></td></tr>
+  <tr><td><code>"Pommes"</code></td><td><code>3.50</code></td></tr>
+</table>
+<p>Wie ein Wörterbuch: du schlägst ein Wort (Key) nach → bekommst die Bedeutung (Value).</p>
+<div class="snack"><strong>🍪 Wissens-Snack:</strong> In anderen Sprachen heißt das <em>HashMap</em>, <em>Hashtable</em> oder <em>assoziatives Array</em>. Gleiche Idee: "Gib mir den Wert zu diesem Namen." Intern extrem schnell — fast egal wie groß das Dict ist.</div>
+
+<!-- ========= 2 ========= -->
+<h2 id="ops">② Dict-Operationen</h2>
+
+<div class="card">
+  <pre><span class="cmt"># Erstellen</span>
+menü = {<span class="str">"Pizza"</span>: 8.50, <span class="str">"Burger"</span>: 6.00}
+<span class="cmt"># Zugriff</span>
+<span class="tag">print</span>(menü[<span class="str">"Pizza"</span>])           <span class="cmt"># 8.50</span>
+<span class="cmt"># Hinzufügen / Ändern</span>
+menü[<span class="str">"Salat"</span>] = 5.00            <span class="cmt"># neu hinzu</span>
+menü[<span class="str">"Pizza"</span>] = 9.00            <span class="cmt"># überschreiben</span>
+<span class="cmt"># Löschen</span>
+<span class="kw">del</span> menü[<span class="str">"Burger"</span>]
+<span class="cmt"># Prüfen ob Key existiert</span>
+<span class="kw">if</span> <span class="str">"Pizza"</span> <span class="kw">in</span> menü:
+    <span class="tag">print</span>(<span class="str">"Pizza ist auf der Karte!"</span>)
+<span class="cmt"># Durchiterieren</span>
+<span class="kw">for</span> name <span class="kw">in</span> menü:
+    <span class="tag">print</span>(<span class="str">f</span><span class="str">"{name} kostet {menü[name]}€"</span>)
+<span class="cmt"># Keys & Values getrennt</span>
+<span class="tag">print</span>(<span class="tag">list</span>(menü.keys()))       <span class="cmt"># ['Pizza', 'Salat']</span>
+<span class="tag">print</span>(<span class="tag">list</span>(menü.values()))     <span class="cmt"># [9.00, 5.00]</span></pre>
+</div>
+
+<h3>Warum Dicts so wichtig sind</h3>
+<p>Fast alles in Python basiert auf Dicts — Variablen, Module, sogar Klassen sind intern Dicts. Sie sind die <strong>universelle Datenstruktur</strong> der Sprache.</p>
+
+<div class="snack"><strong>🍪 Wissens-Snack:</strong> Python's eigene Variablen leben in einem Dict! <code>globals()</code> gibt dir ALLE globalen Variablen als Dict zurück. Probier mal im VSCode: <code>print(globals())</code> — du siehst deine eigenen Funktionen und Variablen darin!</div>
+
+<!-- ========= 3 ========= -->
+<h2 id="json">③ JSON — die Sprache des Internets</h2>
+
+<p>JSON = <strong>J</strong>ava<strong>S</strong>cript <strong>O</strong>bject <strong>N</strong>otation. Ist im Prinzip ein Python-Dict in Textform.</p>
+
+<div class="card">
+  <h3 style="margin-top:0">Python-Dict → JSON-String → und zurück</h3>
+  <pre><span class="kw">import</span> json
+
+<span class="cmt"># Dict → JSON-String (dumps = dump string)</span>
+menü = {<span class="str">"Pizza"</span>: 8.50, <span class="str">"Burger"</span>: 6.00}
+text = json.<span class="tag">dumps</span>(menü, ensure_ascii=<span class="kw">False</span>)
+<span class="tag">print</span>(text)  <span class="cmt"># {"Pizza": 8.5, "Burger": 6.0}</span>
+
+<span class="cmt"># JSON-String → Dict (loads = load string)</span>
+daten = json.<span class="tag">loads</span>(text)
+<span class="tag">print</span>(daten[<span class="str">"Pizza"</span>])  <span class="cmt"># 8.5</span>
+
+<span class="cmt"># In Datei speichern</span>
+<span class="kw">with</span> <span class="tag">open</span>(<span class="str">"menü.json"</span>, <span class="str">"w"</span>) <span class="kw">as</span> f:
+    json.<span class="tag">dump</span>(menü, f, ensure_ascii=<span class="kw">False</span>)
+
+<span class="cmt"># Aus Datei laden</span>
+<span class="kw">with</span> <span class="tag">open</span>(<span class="str">"menü.json"</span>, <span class="str">"r"</span>) <span class="kw">as</span> f:
+    geladen = json.<span class="tag">load</span>(f)</pre>
+</div>
+
+<table>
+  <tr><th>Funktion</th><th>Richtung</th></tr>
+  <tr><td><code>json.dumps(obj)</code></td><td>Python-Objekt → String <span class="cn">[序列化]</span></td></tr>
+  <tr><td><code>json.loads(text)</code></td><td>String → Python-Objekt <span class="cn">[反序列化]</span></td></tr>
+  <tr><td><code>json.dump(obj, file)</code></td><td>Python-Objekt → Datei</td></tr>
+  <tr><td><code>json.load(file)</code></td><td>Datei → Python-Objekt</td></tr>
+</table>
+
+<div class="snack"><strong>🍪 Wissens-Snack:</strong> Warum <code>ensure_ascii=False</code>? Ohne das wird "Pizza" zu <code>"Pizza"</code> aber "Überraschung" würde zu <code>"\u00dcberraschung"</code> — unlesbar! <code>ensure_ascii=False</code> sagt: "Schreib deutsche Buchstaben direkt, nicht als Code."</div>
+
+<!-- ========= 4 ========= -->
+<h2 id="api">④ Was ist eine API?</h2>
+
+<p>API = <strong>A</strong>pplication <strong>P</strong>rogramming <strong>I</strong>nterface <span class="cn">[接口]</span>.</p>
+
+<div class="card">
+  <strong>Stell dir ein Restaurant vor:</strong><br>
+  Du (dein Programm) sitzt am Tisch. Du willst Essen.<br>
+  <strong>Die Speisekarte</strong> = API-Dokumentation<br>
+  <strong>Der Kellner</strong> = die API<br>
+  Du sagst dem Kellner <em>"Pizza Margherita"</em> (das ist ein <strong>Request</strong>).<br>
+  Der Kellner geht in die Küche, kommt zurück mit <em>einer Pizza</em> (<strong>Response</strong>).<br>
+  Du musst nicht wissen, wie die Küche funktioniert.
+</div>
+
+<h3>Echte APIs — dein erster Request</h3>
+
+<pre><span class="cmt"># Erstmal pip installieren: pip3 install requests</span>
+<span class="kw">import</span> requests
+
+<span class="cmt"># Eine echte API abfragen (gibt einen Witz zurück)</span>
+antwort = requests.<span class="tag">get</span>(<span class="str">"https://v2.jokeapi.dev/joke/Programming?lang=de"</span>)
+daten = antwort.json()              <span class="cmt"># Antwort als Dict!</span>
+
+<span class="kw">if</span> daten[<span class="str">"type"</span>] == <span class="str">"single"</span>:
+    <span class="tag">print</span>(daten[<span class="str">"joke"</span>])
+<span class="kw">else</span>:
+    <span class="tag">print</span>(daten[<span class="str">"setup"</span>])
+    <span class="tag">print</span>(daten[<span class="str">"delivery"</span>])</pre>
+
+<div class="snack"><strong>💡 Das ist der große Moment:</strong> Du holst Daten aus dem INTERNET in dein Python-Programm. Die API schickt JSON, Python macht ein Dict draus — und du arbeitest damit wie mit jedem anderen Dict. Genau so funktionieren Wetter-Apps, Chat-Programme, dein Studienhelfer — alles.</div>
+
+<p>Die Struktur ist IMMER gleich:</p>
+<pre>Dein Programm → Request (URL) → API-Server → Response (JSON) → Dein Programm als Dict</pre>
+
+<!-- ========= 5 ========= -->
+<h2 id="quiz">⑤ Quiz</h2>
+
+<div class="quiz" id="q1">
+  <h3>Q1: Was gibt <code>menü["Pizza"]</code> zurück?</h3>
+  <pre>menü = {"Pizza": 8.50, "Burger": 6.00}</pre>
+  <button class="quiz-option" data-correct="true" onclick="check('q1',0)">A. <code>8.50</code></button>
+  <button class="quiz-option" onclick="check('q1',1)">B. <code>"Pizza"</code></button>
+  <button class="quiz-option" onclick="check('q1',2)">C. <code>{"Pizza": 8.50}</code></button>
+  <div class="quiz-feedback" id="q1-fb"></div>
+</div>
+
+<div class="quiz" id="q2">
+  <h3>Q2: JSON ist ...</h3>
+  <button class="quiz-option" onclick="check('q2',0)">A. Eine Programmiersprache</button>
+  <button class="quiz-option" onclick="check('q2',1)">B. Ein Python-Modul</button>
+  <button class="quiz-option" data-correct="true" onclick="check('q2',2)">C. Ein Textformat für strukturierte Daten (wie ein Dict in Textform)</button>
+  <div class="quiz-feedback" id="q2-fb"></div>
+</div>
+
+<div class="quiz" id="q3">
+  <h3>Q3: Was macht <code>json.loads(text)</code>?</h3>
+  <button class="quiz-option" onclick="check('q3',0)">A. Speichert ein Dict in eine Datei</button>
+  <button class="quiz-option" data-correct="true" onclick="check('q3',1)">B. Wandelt einen JSON-String in ein Python-Dict um</button>
+  <button class="quiz-option" onclick="check('q3',2)">C. Lädt eine JSON-Datei aus dem Internet</button>
+  <div class="quiz-feedback" id="q3-fb"></div>
+</div>
+
+<div class="quiz" id="q4">
+  <h3>Q4: Eine API ist am ehesten vergleichbar mit...</h3>
+  <button class="quiz-option" data-correct="true" onclick="check('q4',0)">A. Einem Kellner — du bestellst (Request), bekommst Essen (Response)</button>
+  <button class="quiz-option" onclick="check('q4',1)">B. Einer Programmiersprache</button>
+  <button class="quiz-option" onclick="check('q4',2)">C. Einer Datenbank</button>
+  <div class="quiz-feedback" id="q4-fb"></div>
+</div>
+
+<!-- ========= 6 ========= -->
+<h2 id="aufgabe">⑥ Aufgabe: Vokabeltrainer</h2>
+
+<div class="card">
+  <p>Bau einen einfachen <strong>Deutsch-Englisch Vokabeltrainer</strong>:</p>
+  <ol style="margin-left:18px;line-height:2">
+    <li>Ein Dict mit 5 Vokabeln: <code>{"Haus": "house", "Katze": "cat", ...}</code></li>
+    <li>Speicher das Dict als <code>vokabeln.json</code></li>
+    <li>Programm fragt: <em>"Was heißt 'Haus' auf Englisch?"</em></li>
+    <li>Prüft die Antwort, zählt richtige/falsche</li>
+    <li>Am Ende: <em>"3/5 richtig!"</em></li>
+  </ol>
+</div>
+
+<h3>Gerüst:</h3>
+<pre><span class="kw">import</span> json
+
+vokabeln = {
+    <span class="str">"Haus"</span>: <span class="str">"house"</span>,
+    <span class="str">"Katze"</span>: <span class="str">"cat"</span>,
+    <span class="str">"Hund"</span>: <span class="str">"dog"</span>,
+    <span class="str">"Buch"</span>: <span class="str">"book"</span>,
+    <span class="str">"Schule"</span>: <span class="str">"school"</span>
+}
+
+<span class="cmt"># In JSON speichern</span>
+<span class="kw">with</span> <span class="tag">open</span>(<span class="str">"vokabeln.json"</span>, <span class="str">"w"</span>) <span class="kw">as</span> f:
+    json.<span class="tag">dump</span>(vokabeln, f, ensure_ascii=<span class="kw">False</span>)
+
+<span class="cmt"># Abfragen</span>
+richtig = 0
+<span class="kw">for</span> de, en <span class="kw">in</span> vokabeln.items():         <span class="cmt"># .items() = beide, Key UND Value</span>
+    antwort = <span class="tag">input</span>(<span class="str">f</span><span class="str">"Was heißt '{de}' auf Englisch? "</span>)
+    <span class="kw">if</span> antwort.strip().lower() == en:
+        <span class="tag">print</span>(<span class="str">"✅ Richtig!"</span>)
+        richtig += 1
+    <span class="kw">else</span>:
+        <span class="tag">print</span>(<span class="str">f</span><span class="str">"❌ Falsch! Richtig ist: {en}"</span>)
+
+<span class="tag">print</span>(<span class="str">f</span><span class="str">"\n{richtig}/{len(vokabeln)} richtig!"</span>)</pre>
+
+<div class="progress" style="margin-top:24px;padding:12px;background:var(--card);border-radius:8px;text-align:center;font-size:.85em;color:var(--dim)">📊 Lektion 5: Dicts → Operationen → JSON → API-Grundidee → Quiz → Vokabeltrainer-Aufgabe</div>
+
+<script>
+function check(qid,n){const fb=document.getElementById(qid+'-fb'),btns=document.querySelectorAll('#'+qid+' .quiz-option'),c=btns[n];btns.forEach(b=>b.disabled=true);btns.forEach(b=>{if(b.dataset.correct)b.classList.add('correct')});c.dataset.correct?(c.classList.add('correct'),fb.innerHTML='✅ Richtig!',fb.style.color='var(--good)'):(c.classList.add('wrong'),fb.innerHTML='❌ Schau auf die grüne Antwort.',fb.style.color='var(--bad)')}
+setTimeout(()=>{const o=document.createElement('div');o.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);display:flex;justify-content:center;align-items:center;z-index:9999';o.innerHTML='<div style="background:#111640;padding:28px;border-radius:12px;text-align:center;border:2px solid #ffb347;max-width:300px"><p style="font-size:1.2em">⏰ 30 Minuten!</p><p style="color:#8890a8;margin:10px 0">Steh auf, trink Wasser.</p><button onclick="this.parentElement.parentElement.remove()" style="background:#ffb347;border:none;color:#0a0e27;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:1em">OK, weiter</button></div>';document.body.appendChild(o)},30*60*1000);
+</script></body></html>
